@@ -33,7 +33,8 @@ counties <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytues
 
 
 ```{r}
-
+#| label: data-headers
+#| 
 head(childcare_costs)
 head(counties)
 
@@ -107,7 +108,16 @@ income <- ca_childcare |>
 ```{r}
 #| label: lowest-median-weekly-price-2018
 
+lowest_mc_infant <- ca_childcare |>
+  filter(study_year == "2018") |>
+  group_by(region) |>
+  summarise(median_mc_infant = median(mc_infant, na.rm = TRUE), .groups = 'drop') |>
+  arrange(median_mc_infant) |>
+  slice(1)
+  
 ```
+
+Superior California has the lowest median full-time median weekly price for center-based childcare for infants in 2018.
 
 **6. The following plot shows, for all ten regions, the change over time of the full-time median price for center-based childcare for infants, toddlers, and preschoolers. Recreate the plot. You do not have to replicate the exact colors or theme, but your plot should have the same content, including the order of the facets and legend, reader-friendly labels, axes breaks, and a loess smoother.**
 
