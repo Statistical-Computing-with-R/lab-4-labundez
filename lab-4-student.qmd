@@ -1,6 +1,6 @@
 ---
 title: "Lab 4: Childcare Costs in California"
-author: "Lisette"
+author: "Lisette Abundez"
 format: html
 editor: source
 embed-resources: true
