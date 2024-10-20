@@ -1,6 +1,6 @@
 ---
 title: "Lab 4: Childcare Costs in California"
-author: "Your name here!"
+author: "Lisette"
 format: html
 editor: source
 embed-resources: true
@@ -18,6 +18,8 @@ The data come to us from [TidyTuesday](https://github.com/rfordatascience/tidytu
 ```{r}
 #| label: setup
 
+library(tidyverse)
+
 ```
 
 ```{r}
@@ -26,9 +28,20 @@ The data come to us from [TidyTuesday](https://github.com/rfordatascience/tidytu
 childcare_costs <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/childcare_costs.csv')
 
 counties <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-05-09/counties.csv')
+
+```
+
+
+```{r}
+
+head(childcare_costs)
+head(counties)
+
 ```
 
 **1. Briefly describe the dataset (~ 4 sentences). What information does it contain?**
+
+The counties dataset includes county name, state name, and state abbreviation of each county code. It is a longer dataset than the childcare_costs dataset. The childcare_costs dataset has expansive childcare information for each county code, including information per different demographics, total population, and more. 
 
 ## California Childcare Costs
 
@@ -39,6 +52,11 @@ Let's start by focusing only on California.
 
 ```{r}
 #| label: ca-childcare-costs
+
+ca_childcare <- childcare_costs |>
+  inner_join(counties,
+             by = "county_fips_code") |>
+  filter(state_name == "California")
 
 ```
 
