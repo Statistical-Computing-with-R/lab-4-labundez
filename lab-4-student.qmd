@@ -4,6 +4,9 @@ author: "Lisette"
 format: html
 editor: source
 embed-resources: true
+execute: 
+  warning: false
+  message: false
 ---
 
 ## The Data
@@ -137,7 +140,7 @@ ggplot(ca_childcare_long, mapping = aes(x = study_year,
                               group = region)) +
   geom_point() +
   geom_smooth() +
-  facet_wrap(~ care_type,labeller = as_labeller(c("mc_infant" = "Infants",
+  facet_grid(~ care_type,labeller = as_labeller(c("mc_infant" = "Infants",
                                                   "mc_toddler" = "Toddlers",
                                                   "mc_preschool" = "Preshool"))) +
   scale_x_continuous(breaks = seq(2008, 2018, by = 2), 
@@ -147,7 +150,7 @@ ggplot(ca_childcare_long, mapping = aes(x = study_year,
     x = "Study Year",
     y = NULL,
     color = "Region"
-  ) 
+  )
 
 ```
 Used ChatGPT to understand how to name the faceted grids (https://chatgpt.com/share/6714c1d8-b09c-800e-9607-49483cc662cc)
@@ -159,16 +162,34 @@ Used ChatGPT to understand how to name the faceted grids (https://chatgpt.com/sh
 ```{r}
 #| label: scatterplot-median-income-vs-childcare-cost
 
+income_vs_childcare <- income |>
+  inner_join(ca_childcare_long, 
+             by = "region") |>
+  filter(care_type == "mc_infant")
+
+ggplot(income_vs_childcare, aes(x = mhi_2018, y = median_price)) +
+  geom_point(color = 'blue', alpha = 0.5) + 
+  geom_smooth(method = 'lm', color = 'red', se = FALSE) + 
+  labs(title = "Relationship between Median Household Income and Weekly Childcare Price",
+       x = "Median Household Income ($)",
+       y = NULL,
+       subtitle = "Weekly Price for Center-Based Infant Childcare ($)")
 ```
 
 **8. Look up the documentation for `lm()` and fit a linear regression model to the relationship shown in your plot above.**
 
 ```{r}
 # complete the code provided
-reg_mod1 <- lm()
+reg_mod1 <- lm(median_price ~ mhi_2018, data = income_vs_childcare)
+
 summary(reg_mod1)
 ```
 
 **9. Using the output from `summary()`, write out the estimated regression line (recall: $y = mx + b$).**
 
+The estimated regression line is:
+y = 0.002241x + 131.7 
+
 **10. Do you have evidence to conclude there is a relationship between the median household income and the median weekly cost of center-based childcare for infants in California? Cite values from your `summary()` output to support your claim!**
+
+The p-value for the coefficient of mhi_2018 is nearly 0 (<2e-16), which is less than 0.05, indicating that it is statistically significant. There is a positive relationship between the median household income and the median weekly cost of center-based childcare for infants in California.
