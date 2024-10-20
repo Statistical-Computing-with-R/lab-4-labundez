@@ -126,8 +126,31 @@ Superior California has the lowest median full-time median weekly price for cent
 ```{r}
 #| label: recreate-plot
 
-```
+ca_childcare_long <- ca_childcare |> 
+  pivot_longer(cols = c(mc_infant, mc_toddler, mc_preschool),
+               names_to = "care_type",
+               values_to = "median_price")
 
+ggplot(ca_childcare_long, mapping = aes(x = study_year, 
+                              y = median_price,
+                              color = region, 
+                              group = region)) +
+  geom_point() +
+  geom_smooth() +
+  facet_wrap(~ care_type,labeller = as_labeller(c("mc_infant" = "Infants",
+                                                  "mc_toddler" = "Toddlers",
+                                                  "mc_preschool" = "Preshool"))) +
+  scale_x_continuous(breaks = seq(2008, 2018, by = 2), 
+                     labels = seq(2008, 2018, by = 2)) +
+  labs(
+    title = "Weekly Median Price for Center-Based Childcare ($)",
+    x = "Study Year",
+    y = NULL,
+    color = "Region"
+  ) 
+
+```
+Used ChatGPT to understand how to name the faceted grids (https://chatgpt.com/share/6714c1d8-b09c-800e-9607-49483cc662cc)
 
 ## Median Household Income vs. Childcare Costs for Infants
 
