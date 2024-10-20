@@ -68,7 +68,19 @@ ca_childcare <- childcare_costs |>
 
 ca_childcare <- ca_childcare |> 
   mutate(county_name = str_remove(county_name, " County")) |>
-  ...
+  mutate(
+    county_name = fct_collapse(county_name,
+                      "Superior California" = c("Butte", "Colusa", "Del Norte", "Glenn","Humboldt", "Lassen", "Modoc", "Plumas", "Shasta", "Siskiyou", "Tehama", "Trinity"),
+                      "Bay Area" = c("Alameda", "Contra Costa", "Marin", "Napa", "San Francisco", "San Mateo", "Santa Clara", "Solano", "Sonoma"),
+                      "Northern San Joaquin Valley" = c("San Joaquin", "Stanislaus", "Merced"),
+                      "Sacramento Area" = c("El Dorado", "Placer", "Sacramento", "Sutter", "Yolo", "Yuba"),
+                      "Central Coast" = c("Monterey", "San Benito", "San Luis Obispo", "Santa Barbara", "Santa Cruz", "Ventura"),
+                      "San Diego/Imperial" = c("Imperial", "San Diego"),
+                      "Inland Empire" = c("Riverside", "San Bernardino"),
+                      "Southern San Joaquin Valley" = c("Fresno", "Kern", "Kings", "Madera", "Tulare"),
+                      "Los Angeles" = c("Los Angeles"),
+                      "Orange County" = c("Orange"))
+  )
 ```
 
 
