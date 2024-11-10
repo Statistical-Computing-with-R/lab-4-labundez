@@ -182,12 +182,12 @@ Used ChatGPT to understand how to name the faceted grids (https://chatgpt.com/sh
 ```{r}
 #| label: scatterplot-median-income-vs-childcare-cost
 
-income_vs_childcare <- income |>
+ca_childcare |>
   inner_join(ca_childcare_long, 
              by = "region") |>
   filter(care_type == "mc_infant")
 
-ggplot(income_vs_childcare, aes(x = mhi_2018, y = median_price)) +
+ggplot(ca_childcare_long, aes(x = mhi_2018, y = median_price)) +
   geom_point(color = 'blue', alpha = 0.5) + 
   geom_smooth(method = 'lm', color = 'red', se = FALSE) + 
   labs(title = "Relationship between Median Household Income and Weekly Childcare Price",
@@ -200,7 +200,7 @@ ggplot(income_vs_childcare, aes(x = mhi_2018, y = median_price)) +
 
 ```{r}
 # complete the code provided
-reg_mod1 <- lm(median_price ~ mhi_2018, data = income_vs_childcare)
+reg_mod1 <- lm(median_price ~ mhi_2018, data = ca_childcare_long)
 
 summary(reg_mod1)
 ```
